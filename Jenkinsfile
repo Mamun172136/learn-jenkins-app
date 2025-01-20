@@ -7,7 +7,7 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
-                    args '-v C:/Users/hp/.jenkins/workspace/learn-app:/workspace' // Correct path format for Docker on Windows
+                    args '-v C:/Users/hp/.jenkins/workspace/learn-app:/workspace -w /workspace' // Use the correct path format
                 }
             }
             steps {
