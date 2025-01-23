@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    environment {
+            NETLIFY_SITE_ID = '7cf9a246-eabf-4a0a-ad49-722ee2a24093'
+    }
     stages {
         
 
@@ -69,6 +72,25 @@ pipeline {
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
+                }
+            }
+        }
+
+        stage('Deploy'){
+
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+
+                steps {
+                    sh '''
+
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
+                    echo "Deploying to production site id : $NETLIFY_SITE_ID"
+                    '''
                 }
             }
         }
